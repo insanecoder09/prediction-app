@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    background-color: black;
+    color: white;
+}
+
+*::selection{
+    background: black;
+}
+
+@media (max-width:420px) {
+    .screen{
+        width: 100%;
+    }
+}
