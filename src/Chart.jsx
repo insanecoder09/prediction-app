@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 function Chart({ period }) {
+  const [p, setP] = useState(period)
   const [betValue, setBetValue] = useState((Math.random() * 3).toFixed(2));
   const [enable, setEnable] = useState(0);
   useEffect(() => {
@@ -11,6 +12,7 @@ function Chart({ period }) {
 
   const nextBet = () => {
     setEnable(0);
+    setP(prev=>++prev)
     setBetValue((Math.random() * 3).toFixed(2));
     setTimeout(() => {
       setEnable(1);
@@ -19,7 +21,7 @@ function Chart({ period }) {
   return (
     <>
       <div className="bg-indigo-800 p-2 rounded w-60">
-        <span className="font-bold">Period ID:</span> {period}
+        <span className="font-bold">Period ID:</span> {p}
       </div>
       <div className="h-36 w-full flex items-center justify-center rounded border border-white">
         <h1 className="font-bold text-3xl">{betValue}</h1>
