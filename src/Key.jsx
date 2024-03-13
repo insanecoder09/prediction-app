@@ -7,6 +7,7 @@ import Used from "./Used";
 function Key() {
   const [key, setKey] = useState("");
   const [state, setState] = useState("-1");
+  const [enable, setEnable] = useState(1);
 
   // returned 0 = Wrong Key
   // returned 1 = Correct Key | Never Used | Register on LocalStorage
@@ -14,10 +15,10 @@ function Key() {
   //                                                                   is Already Used
 
   useEffect(() => {
-    const  keyStored = localStorage.getItem('keyStoredInFirstLogin')
-    if(keyStored) setKey(keyStored);
-    const is = localStorage.getItem('predictionPlayerLoggedin');
-    if (is) setState('2');
+    const keyStored = localStorage.getItem("keyStoredInFirstLogin");
+    if (keyStored) setKey(keyStored);
+    const is = localStorage.getItem("predictionPlayerLoggedin");
+    if (is) setState("2");
   }, []);
 
   const getData = (k) => {
@@ -50,9 +51,22 @@ function Key() {
           />
           <button
             className="bg-blue-600 p-2 rounded w-56"
-            onClick={() => getData(key)}
+            onClick={() => {
+              if (key) {
+                getData(key);
+                setEnable(0);
+                setTimeout(() => {
+                  setEnable(2);
+                }, 10000);
+              }
+              else alert("Please enter your Key")
+            }}
           >
-            Submit
+            {enable == 1
+              ? "Submit"
+              : enable == 2
+              ? "Taking too long Please reload"
+              : "Checking..."}
           </button>
         </div>
       </div>
@@ -60,16 +74,16 @@ function Key() {
   else if (state == "0") return <Wrong />;
   else if (state == "1") {
     localStorage.setItem(key, "true");
-    localStorage.setItem('predictionPlayerLoggedin', "true");
-    localStorage.setItem('keyStoredInFirstLogin', key);
+    localStorage.setItem("predictionPlayerLoggedin", "true");
+    localStorage.setItem("keyStoredInFirstLogin", key);
     return <Home />;
   } else if (state == "2") {
     const approval = localStorage.getItem(key);
     if (approval == null) return <Used />;
-    else{
-      localStorage.setItem('predictionPlayerLoggedin', "true");
-      localStorage.setItem('keyStoredInFirstLogin', key);
-      return <Home />
+    else {
+      localStorage.setItem("predictionPlayerLoggedin", "true");
+      localStorage.setItem("keyStoredInFirstLogin", key);
+      return <Home />;
     }
   }
 }
